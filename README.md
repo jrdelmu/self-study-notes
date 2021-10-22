@@ -2,4 +2,4 @@
 
 ## Table of Contents
 
-[React](react-notes)
+[React](https://jrdelmu.github.io/self-study-notes/react-notes)
