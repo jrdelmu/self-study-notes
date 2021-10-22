@@ -1,5 +1,7 @@
 # React
 
+[Table of Contents](jrdelmu.github.io/self-study-notes/)
+
 ## Render HTML Elements to the DOM
 
 ReactDOM offers a simple method to render React elements to the DOM which looks like this: `ReactDOM.render(componentToRender, targetNode)`.
@@ -16,7 +18,7 @@ const JSX = (
   </div>
 );
 // Change code below this line
-ReactDOM.render(JSX, document.getElementById('challenge-node'))
+ReactDOM.render(JSX, document.getElementById('challenge-node')) <--- RENDERING HERE
 ```
 
 ## Create a Stateless Functional Component
@@ -68,7 +70,7 @@ const ShoppingCart = (props) => {
   )
 };
 
-ShoppingCart.defaultProps = {items: 0}
+ShoppingCart.defaultProps = {items: 0} <--- DEFAULT HERE
 ```
 
 ## Use PropTypes to Define the Props You ExpectPassed
@@ -81,7 +83,7 @@ const Items = (props) => {
 };
 
 // Change code below this line
-  Items.propTypes = {quantity: PropTypes.number.isRequired}
+  Items.propTypes = {quantity: PropTypes.number.isRequired} <--- PROPTYPE HERE
 // Change code above this line
 
 Items.defaultProps = {
@@ -132,3 +134,50 @@ class Calendar extends React.Component {
   }
 };
 ```
+
+### Access Props Using this.props
+
+Anytime you refer to a class component within itself, you use the `this` keyword. To access props within a class component, you preface the code that you use to access it with `this`.
+
+```
+class ReturnTempPassword extends React.Component {
+  constructor(props) {
+    super(props);
+console.log(props) <--- this console log will return: {tempPassword: 'qwerty'}
+  }
+  render() {
+    
+    return (
+      
+        <div>
+            { /* Change code below this line */ }
+            <p>Your temporary password is: <strong>{this.props.tempPassword}</strong></p>
+            
+            { /* Change code above this line */ }
+        </div>
+    );
+  }
+};
+
+class ResetPassword extends React.Component {
+  constructor(props) {
+    super(props);
+
+  }
+  render() {
+    return (
+        <div>
+          <h2>Reset Password</h2>
+          <h3>We've generated a new temporary password for you.</h3>
+          <h3>Please reset this password from your account settings ASAP.</h3>
+          { /* Change code below this line */ }
+          <ReturnTempPassword tempPassword='qwerty'/>
+          { /* Change code above this line */ }
+        </div>
+    );
+  }
+};
+
+```
+
+`props` returns an object: `{tempPassword: 'qwerty'}`. In order to access this object dot notation is used: `props.tempPassword` = 'qwerty'.
