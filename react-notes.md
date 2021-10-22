@@ -1,6 +1,6 @@
 # React
 
-[Table of Contents](https://jrdelmu.github.io/self-study-notes/)
+[Table of Contents]()
 
 ## Render HTML Elements to the DOM
 
