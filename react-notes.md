@@ -135,11 +135,12 @@ class Calendar extends React.Component {
 };
 ```
 
-### Access Props Using this.props
+## Access Props Using this.props
 
 Anytime you refer to a class component within itself, you use the `this` keyword. To access props within a class component, you preface the code that you use to access it with `this`.
 
 ```
+CHILD COMPONENT:
 class ReturnTempPassword extends React.Component {
   constructor(props) {
     super(props);
@@ -159,6 +160,7 @@ console.log(props) <--- this console log will return: {tempPassword: 'qwerty'}
   }
 };
 
+PARENT COMPONENT: 
 class ResetPassword extends React.Component {
   constructor(props) {
     super(props);
@@ -181,3 +183,112 @@ class ResetPassword extends React.Component {
 ```
 
 `props` returns an object: `{tempPassword: 'qwerty'}`. In order to access this object dot notation is used: `props.tempPassword` = 'qwerty'.
+
+### Review
+
+```
+PARENT COMPONENT:
+class CampSite extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <Camper/> <--- CHILD COMPONENT
+      </div>
+    );
+  }
+};
+// Change code below this line
+
+CHILD COMPONENT:
+const Camper = (props) =>{
+  return(
+    <p>{props.name}</p>
+  )
+}
+
+Camper.defaultProps= {name: 'CamperBot'} <--- DEFAULT
+
+Camper.propTypes={name:PropTypes.string.isRequired} <--- PROPTYPE 
+```
+
+## Create a Stateful Component
+
+You create state in a React component by declaring a state property on the component class in its constructor. This initializes the component with state when it is created. The state property must be set to a JavaScript object.
+
+You have access to the state object throughout the life of your component. You can update it, render it in your UI, and pass it as props to child components. The state object can be as complex or as simple as you need it to be. Note that you must create a class component by extending React.Component in order to create state like this.
+
+```
+class StatefulComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    // Only change code below this line
+  this.state={
+    name: 'Jovincent Del Mundo'
+  }
+    // Only change code above this line
+  }
+  render() {
+    return (
+      <div>
+        <h1>{this.state.name}</h1>
+      </div>
+    );
+  }
+};      
+```
+
+## Render State in the User Interface
+
+Once you define a component's initial state, you can display any part of it in the UI that is rendered. If a component is stateful, it will always have access to the data in state in its render() method. You can access the data with this.state.
+
+If you want to access a state value within the return of the render method, you have to enclose the value in curly braces.
+
+```
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: 'freeCodeCamp'
+    }
+  }
+  render() {
+    return (
+      <div>
+        { /* Change code below this line */ }
+        <h1>{this.state.name}</h1>
+        { /* Change code above this line */ }
+      </div>
+    );
+  }
+};
+```
+
+## Render State in the User Interface Another Way
+
+There is another way to access state in a component. In the render() method, before the return statement, you can write JavaScript directly. For example, you could declare functions, access data from state or props, perform computations on this data, and so on. Then, you can assign any data to variables, which you have access to in the return statement.
+
+```
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: 'freeCodeCamp'
+    }
+  }
+  render() {
+    // Change code below this line
+      const name = this.state.name <--- DECLARING VARIABLE HERE
+    // Change code above this line
+    return (
+      <div>
+        { /* Change code below this line */ }
+          <h1>{name}</h1> <--- USING VARIABLE HERE 
+        { /* Change code above this line */ }
+      </div>
+    );
+  }
+};
+```
