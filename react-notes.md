@@ -646,3 +646,107 @@ class RenderInput extends React.Component {
   }
 };
 ```
+
+## Use the Lifecycle Method componentWillMount
+
+React components have several special methods that provide opportunities to perform actions at specific points in the lifecycle of a component. These are called lifecycle methods, or lifecycle hooks, and allow you to catch components at certain points in time. This can be before they are rendered, before they update, before they receive props, before they unmount, and so on. Here is a list of some of the main lifecycle methods: componentWillMount() componentDidMount() shouldComponentUpdate() componentDidUpdate() componentWillUnmount() The next several lessons will cover some of the basic use cases for these lifecycle methods.
+
+```
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  componentWillMount() {
+    // Change code below this line
+    console.log('hello')
+    // Change code above this line
+  }
+  render() {
+    return <div />
+  }
+};
+```
+
+## Use the Lifecycle Method componentDidMount
+
+Most web developers, at some point, need to call an API endpoint to retrieve data. If you're working with React, it's important to know where to perform this action.
+
+The best practice with React is to place API calls or any calls to your server in the lifecycle method componentDidMount(). This method is called after a component is mounted to the DOM. Any calls to setState() here will trigger a re-rendering of your component. When you call an API in this method, and set your state with the data that the API returns, it will automatically trigger an update once you receive the data.
+
+```
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeUsers: null
+    };
+  }
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        activeUsers: 1273
+      });
+    }, 2500);
+  }
+  render() {
+    return (
+      <div>
+        {/* Change code below this line */}
+        <h1>Active Users: {this.state.activeUsers}</h1>
+        {/* Change code above this line */}
+      </div>
+    );
+  }
+}
+```
+
+## Add Event Listener
+
+The componentDidMount() method is also the best place to attach any event listeners you need to add for specific functionality. React provides a synthetic event system which wraps the native event system present in browsers. This means that the synthetic event system behaves exactly the same regardless of the user's browser - even if the native events may behave differently between different browsers.
+
+You've already been using some of these synthetic event handlers such as onClick(). React's synthetic event system is great to use for most interactions you'll manage on DOM elements. However, if you want to attach an event handler to the document or window objects, you have to do this directly.
+
+[document.addEventListener]('https://www.w3schools.com/jsref/met_document_addeventlistener.asp')
+
+```
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: ''
+    };
+    this.handleEnter = this.handleEnter.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+  }
+  // Change code below this line
+  componentDidMount() {
+    // console.log('component did mount')
+   document.addEventListener('keydown', this.handleKeyPress)
+  }
+  componentWillUnmount() {
+    // console.log('component will unmount')
+    document.removeEventListener('keydown', this.handleKeyPress)
+  }
+  // Change code above this line
+  handleEnter() {
+    // THIS HAPPENS SECOND
+    this.setState((state) => ({
+      message: state.message + 'You pressed the enter key! '
+    }));
+  }
+  handleKeyPress(event) {
+    // THIS HAPPENS FIRST
+    if (event.keyCode === 13) {
+      this.handleEnter();
+    }
+  }
+  render() {
+    return (
+      <div>
+        <h1>{this.state.message}</h1>
+      </div>
+    );
+  }
+};
+```
+
