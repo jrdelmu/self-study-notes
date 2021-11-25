@@ -1012,3 +1012,155 @@ class MyComponent extends React.Component {
 };
 ```
 
+## Use a Ternary Expression for Conditional Rendering
+
+xBefore moving on to dynamic rendering techniques, there's one last way to use built-in JavaScript conditionals to render what you want: the ternary operator. The ternary operator is often utilized as a shortcut for if/else statements in JavaScript. They're not quite as robust as traditional if/else statements, but they are very popular among React developers. One reason for this is because of how JSX is compiled, if/else statements can't be inserted directly into JSX code. You might have noticed this a couple challenges ago — when an if/else statement was required, it was always outside the return statement. Ternary expressions can be an excellent alternative if you want to implement conditional logic within your JSX. Recall that a ternary operator has three parts, but you can combine several ternary expressions together. Here's the basic syntax:
+
+`condition ? expressionIfTrue : expressionIfFalse`
+
+```
+const inputStyle = {
+  width: 235,
+  margin: 5
+};
+
+class CheckUserAge extends React.Component {
+  constructor(props) {
+    super(props);
+    // Change code below this line
+      this.state = {
+        input: '',
+        userAge: ''
+      }
+    // Change code above this line
+    this.submit = this.submit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(e) {
+    this.setState({
+      input: e.target.value,
+      userAge: ''
+    });
+  }
+  submit() {
+    this.setState(state => ({
+      userAge: state.input
+    }));
+  }
+  render() {
+    const buttonOne = <button onClick={this.submit}>Submit</button>;
+    const buttonTwo = <button>You May Enter</button>;
+    const buttonThree = <button>You Shall Not Pass</button>;
+    return (
+      <div>
+        <h3>Enter Your Age to Continue</h3>
+        <input
+          style={inputStyle}
+          type='number'
+          value={this.state.input}
+          onChange={this.handleChange}
+        />
+        <br />
+        {/* Change code below this line */}
+          {
+            this.state.userAge === '' 
+            ? buttonOne 
+            : this.state.userAge >= 18 
+              ? buttonTwo 
+              : buttonThree}
+        {/* Change code above this line */}
+      </div>
+    );
+  }
+}
+```
+
+## Render Conditionally from Props
+
+So far, you've seen how to use if/else, &&, and the ternary operator (condition ? expressionIfTrue : expressionIfFalse) to make conditional decisions about what to render and when. However, there's one important topic left to discuss that lets you combine any or all of these concepts with another powerful React feature: props. Using props to conditionally render code is very common with React developers — that is, they use the value of a given prop to automatically make decisions about what to render.
+
+In this challenge, you'll set up a child component to make rendering decisions based on props. You'll also use the ternary operator, but you can see how several of the other concepts that were covered in the last few challenges might be just as useful in this context.
+
+```
+class Results extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    {/* Change code below this line */}
+    return <h1>{this.props.fiftyFifty ? 'You Win!' : 'You Lose!'}</h1>;
+    {/* Change code above this line */}
+  }
+}
+
+class GameOfChance extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      counter: 1
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
+  handleClick() {
+    this.setState({
+      // Complete the return statement:
+      counter: this.state.counter + 1
+    });
+  }
+  render() {
+    const expression = Math.random() >= .5; 
+    return (
+      <div>
+        <button onClick={this.handleClick}>Play Again</button>
+        {/* Change code below this line */}
+          <Results fiftyFifty = {expression}/>
+        {/* Change code above this line */}
+        <p>{'Turn: ' + this.state.counter}</p>
+      </div>
+    );
+  }
+}
+```
+
+## Change Inline CSS Conditionally Based on Component State
+
+At this point, you've seen several applications of conditional rendering and the use of inline styles. Here's one more example that combines both of these topics. You can also render CSS conditionally based on the state of a React component. To do this, you check for a condition, and if that condition is met, you modify the styles object that's assigned to the JSX elements in the render method.
+
+This paradigm is important to understand because it is a dramatic shift from the more traditional approach of applying styles by modifying DOM elements directly (which is very common with jQuery, for example). In that approach, you must keep track of when elements change and also handle the actual manipulation directly. It can become difficult to keep track of changes, potentially making your UI unpredictable. When you set a style object based on a condition, you describe how the UI should look as a function of the application's state. There is a clear flow of information that only moves in one direction. This is the preferred method when writing applications with React.
+
+```
+class GateKeeper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      input: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(event) {
+    this.setState({ input: event.target.value })
+  }
+  render() {
+    let inputStyle = {
+      border: '1px solid black'
+    };
+    // Change code below this line
+    if(this.state.input.length > 15){
+      inputStyle = {
+        border: '3px solid red'
+      }
+    }
+    // Change code above this line
+    return (
+      <div>
+        <h3>Don't Type Too Much:</h3>
+        <input
+          type="text"
+          style={inputStyle}
+          value={this.state.input}
+          onChange={this.handleChange} />
+      </div>
+    );
+  }
+};
+```
