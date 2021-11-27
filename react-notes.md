@@ -1164,3 +1164,149 @@ class GateKeeper extends React.Component {
   }
 };
 ```
+
+## Use Array.map() to Dynamically Render Elements
+
+Conditional rendering is useful, but you may need your components to render an unknown number of elements. Often in reactive programming, a programmer has no way to know what the state of an application is until runtime, because so much depends on a user's interaction with that program. Programmers need to write their code to correctly handle that unknown state ahead of time. Using Array.map() in React illustrates this concept.
+
+For example, you create a simple "To Do List" app. As the programmer, you have no way of knowing how many items a user might have on their list. You need to set up your component to dynamically render the correct number of list elements long before someone using the program decides that today is laundry day.
+
+```
+const textAreaStyles = {
+  width: 235,
+  margin: 5
+};
+
+class MyToDoList extends React.Component {
+  constructor(props) {
+    super(props);
+    // Change code below this line
+      this.state = {
+        userInput : '',
+        toDoList : []
+      }
+    // Change code above this line
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleSubmit() {
+    const itemsArray = this.state.userInput.split(',');
+    this.setState({
+      toDoList: itemsArray
+    });
+  }
+  handleChange(e) {
+    this.setState({
+      userInput: e.target.value
+    });
+  }
+  render() {
+    const items = this.state.toDoList.map(function(items){
+      console.log(items);
+      return <li>{items}</li>;
+    });
+    console.log(items)
+    return (
+      <div>
+        <textarea
+          onChange={this.handleChange}
+          value={this.state.userInput}
+          style={textAreaStyles}
+          placeholder='Separate Items With Commas'
+        />
+        <br />
+        <button onClick={this.handleSubmit}>Create List</button>
+        <h1>My "To Do" List:</h1>
+        <ul>{items}</ul>
+      </div>
+    );
+  }
+}
+```
+
+## Give Sibling Elements a Unique Key Attribute
+
+The last challenge showed how the map method is used to dynamically render a number of elements based on user input. However, there was an important piece missing from that example. When you create an array of elements, each one needs a key attribute set to a unique value. React uses these keys to keep track of which items are added, changed, or removed. This helps make the re-rendering process more efficient when the list is modified in any way.
+
+Note: Keys only need to be unique between sibling elements, they don't need to be globally unique in your application.
+
+```
+const frontEndFrameworks = [
+  'React',
+  'Angular',
+  'Ember',
+  'Knockout',
+  'Backbone',
+  'Vue'
+];
+
+function Frameworks() {
+  const renderFrameworks = frontEndFrameworks.map(function(i){
+    return <li key = {i}>{i}</li>
+  })
+  return (
+    <div>
+      <h1>Popular Front End JavaScript Frameworks</h1>
+      <ul>
+        {renderFrameworks}
+      </ul>
+    </div>
+  );
+};
+```
+
+## Use Array.filter() to Dynamically Filter an Array
+
+The map array method is a powerful tool that you will use often when working with React. Another method related to map is filter, which filters the contents of an array based on a condition, then returns a new array. For example, if you have an array of users that all have a property online which can be set to true or false, you can filter only those users that are online by writing:
+
+`let onlineUsers = users.filter(user => user.online);`
+
+```
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: [
+        {
+          username: 'Jeff',
+          online: true
+        },
+        {
+          username: 'Alan',
+          online: false
+        },
+        {
+          username: 'Mary',
+          online: true
+        },
+        {
+          username: 'Jim',
+          online: false
+        },
+        {
+          username: 'Sara',
+          online: true
+        },
+        {
+          username: 'Laura',
+          online: true
+        }
+      ]
+    };
+  }
+  render() {
+    //console.log(this.state.users[1].online);
+    const usersOnline = this.state.users.filter(user => user.online === true);
+    //console.log(usersOnline);
+    const renderOnline = usersOnline.map(function(i){
+      return <li key={i.username}>{i.username}</li>
+    })
+    return (
+      <div>
+        <h1>Current Online Users:</h1>
+        <ul>{renderOnline}</ul>
+      </div>
+    );
+  }
+}
+```
